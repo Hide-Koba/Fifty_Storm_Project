@@ -48,10 +48,14 @@ class RecipesController extends AppController {
  * @return void
  */
 	public function add() {
+		$this->loadModel('Ingredient');
+		$this->loadModel('Step');
 		if ($this->request->is('post')) {
+			//var_dump($this->request->data);
 			$this->Recipe->create();
-			if ($this->Recipe->save($this->request->data)) {
+			if ($this->Recipe->saveAll($this->request->data)) {
 				$this->Flash->success(__('The recipe has been saved.'));
+				//exit();
 				return $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Flash->error(__('The recipe could not be saved. Please, try again.'));

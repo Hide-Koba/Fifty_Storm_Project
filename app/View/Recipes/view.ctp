@@ -16,6 +16,30 @@
 			<?php echo h($recipe['Recipe']['category']); ?>
 			&nbsp;
 		</dd>
+		<dt>
+			<?php echo __('材料');?>
+		</dt>
+		<dd>
+			<?php
+				$i=0;
+				foreach ($recipe['Ingredient'] as $key=>$var){
+					echo "".$recipe['Ingredient'][$i]['name'].": ".$recipe['Ingredient'][$i]['weight']." ".$recipe['Ingredient'][$i]['weight_category']."<br />";
+					$i++;
+				}
+			?>
+		</dd>
+		<dt>
+			<?php echo __('作り方');?>
+		</dt>
+		<dd>
+			<?php
+				$i=0;
+				foreach ($recipe['Step'] as $key=>$var){
+					echo "".$recipe['Step'][$i]['step_count'].": ".$recipe['Step'][$i]['comment']."<br />";
+					$i++;
+				}
+			?>
+		</dd>
 		<dt><?php echo __('Advise'); ?></dt>
 		<dd>
 			<?php echo h($recipe['Recipe']['advise']); ?>
