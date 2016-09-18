@@ -29,7 +29,7 @@ class Recipe extends AppModel {
 		'name' => array(
 			'notBlank' => array(
 				'rule' => array('notBlank'),
-				//'message' => 'Your custom message here',
+				'message' => '名前を入力して下さい',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -59,7 +59,7 @@ class Recipe extends AppModel {
 		'cal' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'カロリーを数字で入力して下さい',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -67,9 +67,9 @@ class Recipe extends AppModel {
 			),
 		),
 		'fat' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+			'decimal' => array(
+				'rule' => array('decimal'),
+				'message' => '脂質を数字で入力して下さい',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -77,9 +77,9 @@ class Recipe extends AppModel {
 			),
 		),
 		'protain' => array(
-			'numeric' => array(
-				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+			'decimal' => array(
+				'rule' => array('decimal'),
+				'message' => 'タンパク質を数字で入力して下さい',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
