@@ -4,13 +4,13 @@ $(function() {
 
 $('#add-option-button').click(function(event){
 	//console.log("test");
-    var optionCount = ($('#poll-options > div').size()/3)+1;
+    var optionCount = ($('#poll-options > div').size()/3);
     
-    var inputHtml = '<div class="input text"><label for="Ingredient' + optionCount + 'Name">材料 ' + optionCount
+    var inputHtml = '<div class="input text"><label for="Ingredient' + optionCount + 'Name">材料 ' + (optionCount+1)
         + '</label><input id="Ingredient' + optionCount + 'Name" type="text" name="data[Ingredient][' + optionCount + '][name]" />'+
-        '</div><div class="input text"><label for="Ingredient' + optionCount + 'weight">数量 ' + optionCount
+        '</div><div class="input text"><label for="Ingredient' + optionCount + 'weight">数量 ' + (optionCount+1)
         + '</label><input id="Ingredient' + optionCount + 'weight" type="text" name="data[Ingredient][' + optionCount + '][weight]" />'+
-        '</div><div class="input select"><label for="Ingredient' + optionCount + 'weight_category">単位 ' + optionCount
+        '</div><div class="input select"><label for="Ingredient' + optionCount + 'weight_category">単位 ' + (optionCount+1)
         + '</label><select id="Ingredient' + optionCount + 'weight_category" name="data[Ingredient][' + optionCount + '][weight_category]"><option value="0">g</option><option value="1">cc</option><option value="2">手量り</option></select>'
         +'</div>';
     event.preventDefault();
@@ -18,9 +18,9 @@ $('#add-option-button').click(function(event){
 });
 $('#add-step-button').click(function(event){
 	//console.log("test");
-    var optionCount = $('#step-options > div').size() + 1;
+    var optionCount = $('#step-options > div').size();
     var inputHtml = '<input id="Step' + optionCount + 'Name" type="hidden" value='+optionCount+' name="data[Step][' + optionCount + '][step_count]" />'+
-        '</div><div class="input text"><label for="Step' + optionCount + 'comment">工程 ' + optionCount
+        '</div><div class="input text"><label for="Step' + optionCount + 'comment">工程 ' + (optionCount+1)
         + '</label><input id="Step' + optionCount + 'comment" type="text" name="data[Step][' + optionCount + '][comment]" />'+
         '</div>';
     event.preventDefault();

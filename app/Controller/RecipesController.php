@@ -51,12 +51,28 @@ class RecipesController extends AppController {
 		$this->loadModel('Ingredient');
 		$this->loadModel('Step');
 		if ($this->request->is('post')) {
-			//var_dump($this->request->data);
+			//debug($this->request->data);
+			//check and trim blank column at Ingredient and Step
+			$cnt=0;
+			foreach ($this->request->data['Ingredient'] as $var){
+				if ($var['name']===""){
+					unset($this->request->data['Ingredient'][$cnt]);
+				}
+				$cnt++;
+			}
+			$cnt=0;
+			foreach($this->request->data['Step'] as $var){
+				if ($var['comment']===""){
+					unset($this->request->data['Step'][$cnt]);
+				}
+				$cnt++;
+			}
+
 			$this->Recipe->create();
 			if ($this->Recipe->saveAll($this->request->data)) {
 				$this->Flash->success(__('The recipe has been saved.'));
-				//exit();
-				return $this->redirect(array('action' => 'index'));
+				exit();
+				//return $this->redirect(array('action' => 'index'));
 			} else {
 				$this->Flash->error(__('The recipe could not be saved. Please, try again.'));
 			}
