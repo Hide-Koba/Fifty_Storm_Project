@@ -1,17 +1,30 @@
 <?php echo $this->Html->script( 'jquery-1.9.1', array( 'inline' => true ) ); ?>
 <script>
+function delete_ing(number){
+	//alert(number);
+	var node = document.getElementById("ing_"+number);
+	node.parentNode.removeChild(node);
+}
+function delete_step(number){
+	//alert(number);
+	var node = document.getElementById("step_"+number);
+	node.parentNode.removeChild(node);
+}
 $(function() {
 
 $('#add-option-button').click(function(event){
 	//console.log("test");
     var optionCount = ($('#poll-options > div').size()/3);
     
-    var inputHtml = '<div class="input text"><label for="Ingredient' + optionCount + 'Name">材料 ' + (optionCount+1)
+    var inputHtml = '<div id="ing_'+optionCount+'">'
+    	+'<div class="input text" id="ing_' + optionCount + '"><label for="Ingredient' + optionCount + 'Name">材料 ' + (optionCount+1)
         + '</label><input id="Ingredient' + optionCount + 'Name" type="text" name="data[Ingredient][' + optionCount + '][name]" />'+
         '</div><div class="input text"><label for="Ingredient' + optionCount + 'weight">数量 ' + (optionCount+1)
         + '</label><input id="Ingredient' + optionCount + 'weight" type="text" name="data[Ingredient][' + optionCount + '][weight]" />'+
         '</div><div class="input select"><label for="Ingredient' + optionCount + 'weight_category">単位 ' + (optionCount+1)
         + '</label><select id="Ingredient' + optionCount + 'weight_category" name="data[Ingredient][' + optionCount + '][weight_category]"><option value="0">g</option><option value="1">cc</option><option value="2">手量り</option></select>'
+        +'<input type="button" value="材料'+(optionCount+1)+'を削除する" id="delete_ing_"'+optionCount+' onclick=delete_ing('+(optionCount)+')>'
+        +'</div>'
         +'</div>';
     event.preventDefault();
     $('#poll-options').append(inputHtml);
@@ -19,10 +32,15 @@ $('#add-option-button').click(function(event){
 $('#add-step-button').click(function(event){
 	//console.log("test");
     var optionCount = $('#step-options > div').size();
-    var inputHtml = '<input id="Step' + optionCount + 'Name" type="hidden" value='+optionCount+' name="data[Step][' + optionCount + '][step_count]" />'+
-        '</div><div class="input text"><label for="Step' + optionCount + 'comment">工程 ' + (optionCount+1)
-        + '</label><input id="Step' + optionCount + 'comment" type="text" name="data[Step][' + optionCount + '][comment]" />'+
-        '</div>';
+    
+    //need to 整理 Div structure
+    var inputHtml = '<div id="step_'+optionCount+'">'
+    	+'<input id="Step' + optionCount + 'Name" type="hidden" value='+optionCount+' name="data[Step][' + optionCount + '][step_count]" />'
+        +'<div class="input text"><label for="Step' + optionCount + 'comment">手順 ' + (optionCount+1)
+        + '</label><input id="Step' + optionCount + 'comment" type="text" name="data[Step][' + optionCount + '][comment]" />'
+        +'<input type="button" value="手順'+(optionCount+1)+'を削除する" id="delete_step_"'+optionCount+' onclick=delete_step('+(optionCount)+')>'
+        +'</div>'
+        +'</div>';
     event.preventDefault();
     $('#step-options').append(inputHtml);
 });
