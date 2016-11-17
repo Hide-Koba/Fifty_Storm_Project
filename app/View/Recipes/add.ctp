@@ -1,105 +1,27 @@
-<?php echo $this->Html->script( 'jquery-1.9.1', array( 'inline' => true ) ); ?>
-<script>
-function delete_ing(number){
-	//alert(number);
-	var node = document.getElementById("ing_"+number);
-	node.parentNode.removeChild(node);
-}
-function delete_step(number){
-	//alert(number);
-	var node = document.getElementById("step_"+number);
-	node.parentNode.removeChild(node);
-}
-$(function() {
-
-$('#add-option-button').click(function(event){
-	//console.log("test");
-    var optionCount = 1+($('#poll-options > span').size());
-    console.log($('#poll-options > span').size());
-    var inputHtml = '<span id="ing_'+optionCount+'">'
-    	+'<div class="input text"><label for="Ingredient' + optionCount + 'Name">材料 ' + (optionCount+1)
-        + '</label><input id="Ingredient' + optionCount + 'Name" type="text" name="data[Ingredient][' + optionCount + '][name]" />'+
-        '</div><div class="input text"><label for="Ingredient' + optionCount + 'weight">数量 ' + (optionCount+1)
-        + '</label><input id="Ingredient' + optionCount + 'weight" type="number" name="data[Ingredient][' + optionCount + '][weight]" step="any"/>'+
-        '</div><div class="input select"><label for="Ingredient' + optionCount + 'weight_category">単位 ' + (optionCount+1)
-        + '</label><select id="Ingredient' + optionCount + 'weight_category" name="data[Ingredient][' + optionCount + '][weight_category]"><option value="0">g</option><option value="1">cc</option><option value="2">手量り</option></select>'
-        +'<input type="button" value="材料'+(optionCount+1)+'を削除する" id="delete_ing_"'+optionCount+' onclick=delete_ing('+(optionCount)+')>'
-        +'</div></span>';
-    event.preventDefault();
-    $('#poll-options').append(inputHtml);
-});
-$('#add-step-button').click(function(event){
-	//console.log("test");
-    var optionCount = 1+$('#step-options > span').size();
-    var inputHtml = '<span id="Step_' + optionCount + '"><input id="Step' + optionCount + 'Name" type="hidden" value='+optionCount+' name="data[Step][' + optionCount + '][step_count]" />'+
-        '</div><div class="input text"><label for="Step' + optionCount + 'comment">手順 ' + (optionCount+1)
-        + '</label><input id="Step' + optionCount + 'comment" type="text" name="data[Step][' + optionCount + '][comment]" />'+
-        '</div></span>';
-    event.preventDefault();
-    $('#step-options').append(inputHtml);
-});
-});
-</script>
 <div class="recipes form">
 <?php echo $this->Form->create('Recipe'); ?>
 	<fieldset>
-		<legend><?php echo __('五十嵐プロジェクト・レシピ・入力フォーム'); ?></legend>
+		<legend><?php echo __('Add Recipe'); ?></legend>
 	<?php
-		echo $this->Form->input('Recipe.name',array('label'=>'料理名を入力して下さい'));
-		$categories = array(
-		'主食','主菜','副菜 和え物', '副菜 煮物', '副菜 サラダ', '副菜 その他(焼き物など)', '汁'
-		);
-		echo $this->Form->input('Recipe.category',array('label'=>'種別を選んでください','options'=>$categories));
-		?>
-		
-		<div id="poll-options">
-<?php 
-//if (isset($this->data['Ingredient'])) {
-    $i = 0;
-    //foreach ($this->data['Ingredient'] as $opt) {
-        //echo $form->hidden("Ingredient.$i.id");
-        echo $this->Form->input("Ingredient.$i.name", array('label' => "材料 " . ($i + 1)));
-		echo $this->Form->input("Ingredient.$i.weight", array('label' => "数量 " . ($i+1)));
-		$weight_category_selecter = array(
-		'g', 'cc', '手量り'
-		);
-		echo $this->Form->input("Ingredient.$i.weight_category", array('label' => "単位 " . ($i+1), 'options'=>$weight_category_selecter));
-        $i++;
-    //}
-//}
-?>
-</div>
-<input type="button" value="材料追加" id="add-option-button">
-		<div id="step-options">
-			<?php 
-//if (isset($this->data['Ingredient'])) {
-    $i = 0;
-    //foreach ($this->data['Ingredient'] as $opt) {
-        echo $this->Form->hidden("Ingredient.$i.step_count",array('value'=>$i+1));
-        echo $this->Form->input("Step.$i.comment", array('label' => "手順 " . ($i + 1)));
-        $i++;
-    //}
-//}
-?>
-		</div>
-		<input type="button" value="手順追加" id="add-step-button">
-		<?php
-		echo $this->Form->input('Recipe.advise',array('label'=>'作り方のコツやお勧め一言をお願いします'));
-		$seasons = array(
-		'春', '夏', '秋','冬', '一年を通じて' 
-		);
-		echo $this->Form->input('Recipe.season',array('label'=>'料理の季節を選んでください','options'=>$seasons));
-		echo $this->Form->input('Recipe.cal',array('label'=>'カロリーを入力して下さい'));
-		echo $this->Form->input('Recipe.fat',array('label'=>'脂質を入力して下さい'));
-		echo $this->Form->input('Recipe.protain',array('label'=>'タンパク質を入力して下さい'));
+		echo $this->Form->input('name');
+		echo $this->Form->input('category');
+		echo $this->Form->input('advise');
+		echo $this->Form->input('season');
+		echo $this->Form->input('cal');
+		echo $this->Form->input('fat');
+		echo $this->Form->input('protain');
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('送信')); ?>
+<?php echo $this->Form->end(__('Submit')); ?>
 </div>
 <div class="actions">
-	<h3><?php echo __('メニュー'); ?></h3>
+	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
 
-		<li><?php echo $this->Html->link(__('レシピリストに戻る'), array('action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link(__('List Recipes'), array('action' => 'index')); ?></li>
+		<li><?php echo $this->Html->link(__('List Ingredients'), array('controller' => 'ingredients', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Ingredient'), array('controller' => 'ingredients', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('List Steps'), array('controller' => 'steps', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Step'), array('controller' => 'steps', 'action' => 'add')); ?> </li>
 	</ul>
 </div>
