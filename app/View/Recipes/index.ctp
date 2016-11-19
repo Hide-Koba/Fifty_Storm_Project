@@ -16,11 +16,56 @@
 	<?php foreach ($recipes as $recipe): ?>
 	<tr>
 		<td><?php echo h($recipe['Recipe']['name']); ?>&nbsp;</td>
-		<td><?php echo h($recipe['Recipe']['category']); ?>&nbsp;</td>
-		<td><?php echo h($recipe['Recipe']['season']); ?>&nbsp;</td>
-		<td><?php echo h($recipe['Recipe']['cal']); ?>&nbsp;</td>
-		<td><?php echo h($recipe['Recipe']['fat']); ?>&nbsp;</td>
-		<td><?php echo h($recipe['Recipe']['protain']); ?>&nbsp;</td>
+		<td><?php 
+			switch($recipe['Recipe']['category']){
+				case 0:
+					echo "主食";
+					break;
+				case 1:
+					echo "主菜";
+					break;
+				case 2:
+					echo "副菜 和え物";
+					break;
+				case 3:
+					echo "副菜 煮物";
+					break;
+				case 4:
+					echo "副菜 サラダ";
+					break;
+				case 5:
+					echo "副菜 その他(焼き物など)";
+					break;
+				case 6:
+					echo "汁";
+					break;
+				default:
+					break;
+			}
+		?>&nbsp;</td>
+		<td><?php 
+			switch($recipe['Recipe']['season']){
+				case 0:
+					echo "春";
+					break;
+				case 1:
+					echo "夏";
+					break;
+				case 2:
+					echo "秋";
+					break;
+				case 3:
+					echo "冬";
+					break;
+				case 4:
+					echo "一年を通じて";
+				default:
+					break;		
+			}
+		?>&nbsp;</td>
+		<td><?php echo h($recipe['Recipe']['cal']); ?>cal&nbsp;</td>
+		<td><?php echo h($recipe['Recipe']['fat']); ?>g&nbsp;</td>
+		<td><?php echo h($recipe['Recipe']['protain']); ?>g&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('レシピの確認'), array('action' => 'view', $recipe['Recipe']['id'])); ?>
 			<?php echo $this->Html->link(__('レシピの編集'), array('action' => 'edit', $recipe['Recipe']['id'])); ?>

@@ -47,18 +47,20 @@ class IngredientsController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function add($id=null) {
 		if ($this->request->is('post')) {
 			$this->Ingredient->create();
+			$backward_id = $this->request->data['Ingredient']['recipe_id'];
 			if ($this->Ingredient->save($this->request->data)) {
-				$this->Flash->success(__('The ingredient has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				$this->Flash->success(__('材料の追加を完了しました'));
+				return $this->redirect(array('controller'=>'Recipes','action' => 'view',$backward_id));
 			} else {
 				$this->Flash->error(__('The ingredient could not be saved. Please, try again.'));
 			}
 		}
 		$recipes = $this->Ingredient->Recipe->find('list');
 		$this->set(compact('recipes'));
+		$this->set('backward_id',$id);
 	}
 
 /**
@@ -74,8 +76,8 @@ class IngredientsController extends AppController {
 		}
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Ingredient->save($this->request->data)) {
-				$this->Flash->success(__('The ingredient has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				$this->Flash->success(__('登録を完了しました'));
+				return $this->redirect(array('controller'=>'Recipes','action' => 'view',$this->request->data['Ingredient']['recipe_id']));
 			} else {
 				$this->Flash->error(__('The ingredient could not be saved. Please, try again.'));
 			}
@@ -100,11 +102,15 @@ class IngredientsController extends AppController {
 			throw new NotFoundException(__('Invalid ingredient'));
 		}
 		$this->request->allowMethod('post', 'delete');
+		//check backward ID
+		$delete_object = $this->Ingredient->find('first',array('conditions'=>array('Ingredient.id'=>$id)));
+		$backward_id = $delete_object['Ingredient']['recipe_id'];
+		
 		if ($this->Ingredient->delete()) {
 			$this->Flash->success(__('The ingredient has been deleted.'));
 		} else {
 			$this->Flash->error(__('The ingredient could not be deleted. Please, try again.'));
 		}
-		return $this->redirect(array('action' => 'index'));
+		return $this->redirect(array('controller'=>'Recipes','action' => 'view',$backward_id));
 	}
 }

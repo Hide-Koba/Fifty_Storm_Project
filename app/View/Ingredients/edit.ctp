@@ -1,24 +1,21 @@
 <div class="ingredients form">
 <?php echo $this->Form->create('Ingredient'); ?>
 	<fieldset>
-		<legend><?php echo __('Edit Ingredient'); ?></legend>
+		<legend><?php echo __('材料の編集'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('recipe_id');
-		echo $this->Form->input('name');
-		echo $this->Form->input('weight');
-		echo $this->Form->input('weight_category');
+		echo $this->Form->input('recipe_id',array('type'=>'hidden','value'=>$this->request->data['Ingredient']['recipe_id']));
+		echo $this->Form->input('name',array('label'=>'名前'));
+		echo $this->Form->input('weight',array('label'=>'重さ'));
+		$weight_category_selecter = array(
+		'g', 'cc', '手量り'
+		);
+		echo $this->Form->input('weight_category',array('label'=>'重さの単位','options'=>$weight_category_selecter));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(__('保存')); ?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Ingredient.id')), array('confirm' => __('Are you sure you want to delete # %s?', $this->Form->value('Ingredient.id')))); ?></li>
-		<li><?php echo $this->Html->link(__('List Ingredients'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Recipes'), array('controller' => 'recipes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Recipe'), array('controller' => 'recipes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

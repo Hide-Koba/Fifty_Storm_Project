@@ -73,7 +73,7 @@ class RecipesController extends AppController {
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Recipe->save($this->request->data)) {
 				$this->Flash->success(__('The recipe has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				return $this->redirect(array('action' => 'view',$id));
 			} else {
 				$this->Flash->error(__('The recipe could not be saved. Please, try again.'));
 			}
