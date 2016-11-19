@@ -47,18 +47,55 @@ class StepsController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function add($id=null) {
 		if ($this->request->is('post')) {
-			$this->Step->create();
-			if ($this->Step->save($this->request->data)) {
-				$this->Flash->success(__('The step has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Flash->error(__('The step could not be saved. Please, try again.'));
+			$forward_id = $this->request->data['Step']['recipe_id'];
+			//Normal add&update
+			if ($this->request->data['Step']['add_option']==0){
+					//check counter and add steps
+					$counter = $this->Step->find('count',array('conditions'=>array('recipe_id'=>$this->request->data['Step']['recipe_id'])));
+					$counter++;
+					$this->request->data['Step']['step_count'] = $counter;
+					$this->Step->create();
+				if ($this->Step->save($this->request->data)) {
+					$this->Flash->success(__('The qitem has been saved.'));
+					return $this->redirect(array('controller'=>'Recipes','action' => 'view',$forward_id));
+				} else {
+					$this->Flash->error(__('The qitem could not be saved. Please, try again.'));
+				}
+			}else{
+				$add_option = $this->request->data['Step']['add_option'];
+				//Inturrupt Update
+				$updater = $this->Step->intrrupt_update_prepare($this->request->data['Step'],$add_option);
+				//Delete current holding records
+				$cnt=0;
+				foreach ($updater as $update){
+					if (!isset($update['Step']['id'])){continue;}
+					$del_id[$cnt] = $update['Step']['id']; 
+					$cnt++;
+				}
+				$this->Step->deleteAll(array('id'=>$del_id),false); //Don't forget false
+				
+				//Unset all IDs to update as "NEW"
+				$cnt=0;
+				foreach ($updater as $update){
+					unset($updater[$cnt]['Step']['id']);
+					$cnt++;
+				}
+				
+				//update all
+				$this->Step->create();
+				if ($this->Step->saveAll($updater)) {
+					$this->Flash->success(__('The qitem has been saved.'));
+					return $this->redirect(array('controller'=>'Recipes','action' => 'view',$forward_id));
+				} 
 			}
+			
 		}
 		$recipes = $this->Step->Recipe->find('list');
 		$this->set(compact('recipes'));
+		$this->set('backward_id',$id);
+		$this->set('add_options',$this->Step->set_add_options($id));
 	}
 
 /**
@@ -75,7 +112,7 @@ class StepsController extends AppController {
 		if ($this->request->is(array('post', 'put'))) {
 			if ($this->Step->save($this->request->data)) {
 				$this->Flash->success(__('The step has been saved.'));
-				return $this->redirect(array('action' => 'index'));
+				return $this->redirect(array('controller'=>'Recipes','action' => 'view',$this->request->data['Step']['recipe_id']));
 			} else {
 				$this->Flash->error(__('The step could not be saved. Please, try again.'));
 			}

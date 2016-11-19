@@ -1,23 +1,17 @@
 <div class="steps form">
 <?php echo $this->Form->create('Step'); ?>
 	<fieldset>
-		<legend><?php echo __('Edit Step'); ?></legend>
+		<legend><?php echo __('工程を編集'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
 		echo $this->Form->input('recipe_id');
-		echo $this->Form->input('step_count');
-		echo $this->Form->input('comment');
+		echo $this->Form->input('step_count',array('label'=>'工数'));
+		echo $this->Form->input('comment',array('label'=>'工程'));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(__('編集を完了')); ?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Step.id')), array('confirm' => __('Are you sure you want to delete # %s?', $this->Form->value('Step.id')))); ?></li>
-		<li><?php echo $this->Html->link(__('List Steps'), array('action' => 'index')); ?></li>
-		<li><?php echo $this->Html->link(__('List Recipes'), array('controller' => 'recipes', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Recipe'), array('controller' => 'recipes', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

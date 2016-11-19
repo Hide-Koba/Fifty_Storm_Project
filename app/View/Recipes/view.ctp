@@ -125,22 +125,19 @@
 	</div>
 </div>
 <div class="related">
-	<h3><?php echo __('Related Steps'); ?></h3>
+	<h3><?php echo __('手順一覧');?></h3>
 	<?php if (!empty($recipe['Step'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
 	<tr>
-		<th><?php echo __('Step Count'); ?></th>
-		<th><?php echo __('Comment'); ?></th>
+		<th><?php echo __('手順'); ?></th>
 		<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($recipe['Step'] as $step): ?>
 		<tr>
-			<td><?php echo $step['step_count']; ?></td>
 			<td><?php echo $step['comment']; ?></td>
 			<td class="actions">
-				<?php echo $this->Html->link(__('View'), array('controller' => 'steps', 'action' => 'view', $step['id'])); ?>
-				<?php echo $this->Html->link(__('Edit'), array('controller' => 'steps', 'action' => 'edit', $step['id'])); ?>
-				<?php echo $this->Form->postLink(__('Delete'), array('controller' => 'steps', 'action' => 'delete', $step['id']), array('confirm' => __('Are you sure you want to delete # %s?', $step['id']))); ?>
+				<?php echo $this->Html->link(__('手順を編集'), array('controller' => 'steps', 'action' => 'edit', $step['id'])); ?>
+				<?php echo $this->Form->postLink(__('手順を削除'), array('controller' => 'steps', 'action' => 'delete', $step['id']), array('confirm' => __('Are you sure you want to delete # %s?', $step['id']))); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
@@ -149,7 +146,7 @@
 
 	<div class="actions">
 		<ul>
-			<li><?php echo $this->Html->link(__('New Step'), array('controller' => 'steps', 'action' => 'add')); ?> </li>
+			<li><?php echo $this->Html->link(__('手順を追加'), array('controller' => 'steps', 'action' => 'add',$recipe['Recipe']['id'])); ?> </li>
 		</ul>
 	</div>
 </div>
