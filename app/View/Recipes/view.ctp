@@ -81,17 +81,7 @@
 			&nbsp;
 		</dd>
 	</dl>
-</div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('レシピを編集する'), array('action' => 'edit', $recipe['Recipe']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('レシピを削除する'), array('action' => 'delete', $recipe['Recipe']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $recipe['Recipe']['id']))); ?> </li>
-		<li><?php echo $this->Html->link(__('一覧へ戻る'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('新しいレシピを登録する'), array('action' => 'add')); ?> </li>
-	</ul>
-</div>
-<div class="related">
+	<div class="related">
 	<h3><?php echo __('素材リスト'); ?></h3>
 	<?php if (!empty($recipe['Ingredient'])): ?>
 	<table cellpadding = "0" cellspacing = "0">
@@ -150,3 +140,14 @@
 		</ul>
 	</div>
 </div>
+</div>
+<div class="actions">
+	<h3><?php echo __('Actions'); ?></h3>
+	<ul>
+		<li><?php echo $this->Html->link(__('レシピを編集する'), array('action' => 'edit', $recipe['Recipe']['id'])); ?> </li>
+		<li><?php echo $this->Form->postLink(__('レシピを削除する'), array('action' => 'delete', $recipe['Recipe']['id']), array('confirm' => __('Are you sure you want to delete # %s?', $recipe['Recipe']['id']))); ?> </li>
+		<li><?php echo $this->Html->link(__('一覧へ戻る'), array('action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('新しいレシピを登録する'), array('action' => 'add')); ?> </li>
+	</ul>
+</div>
+

@@ -87,7 +87,6 @@ class Step extends AppModel {
 		return $add_options;
 	}
 	public function intrrupt_update_prepare($update_item,$inturrupt_id){
-		debug($update_item);
 		$update_item['add_option'] = (int)$update_item['add_option'];
 		$list_qitems = $this->find('all',array('conditions'=>array('recipe_id'=>$update_item['recipe_id'])));
 		//prepare before inturrupt

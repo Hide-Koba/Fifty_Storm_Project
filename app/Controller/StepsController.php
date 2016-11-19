@@ -133,6 +133,10 @@ class StepsController extends AppController {
  */
 	public function delete($id = null) {
 		$this->Step->id = $id;
+		
+		//check backward_id
+		$delete_object = $this->Step->find('first',array('conditions'=>array('Step.id'=>$id)));
+		$backward_id = $delete_object['Step']['recipe_id'];
 		if (!$this->Step->exists()) {
 			throw new NotFoundException(__('Invalid step'));
 		}
@@ -142,6 +146,6 @@ class StepsController extends AppController {
 		} else {
 			$this->Flash->error(__('The step could not be deleted. Please, try again.'));
 		}
-		return $this->redirect(array('action' => 'index'));
+		return $this->redirect(array('controller'=>'Recipes','action' => 'view',$backward_id));
 	}
 }

@@ -4,8 +4,7 @@
 		<legend><?php echo __('工程を編集'); ?></legend>
 	<?php
 		echo $this->Form->input('id');
-		echo $this->Form->input('recipe_id');
-		echo $this->Form->input('step_count',array('label'=>'工数'));
+		echo $this->Form->input('recipe_id',array('type'=>'hidden'));
 		echo $this->Form->input('comment',array('label'=>'工程'));
 	?>
 	</fieldset>
