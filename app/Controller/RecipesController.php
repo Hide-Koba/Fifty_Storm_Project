@@ -122,4 +122,39 @@ class RecipesController extends AppController {
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
+
+	//Pick three
+	public function pickthree(){
+		$this->layout = 'recipe_view';
+		if ($this->request->data){
+			$number_adult = $this->request->data['Recipe']['number_adult'];
+			$number_child = $this->request->data['Recipe']['number_child'];
+
+			//Get Recipe
+			$recipe = $this->Recipe->pickrecipe(3);
+			//$recipe = $this->Recipe->multiplier($recipe,$number_adult,$number_child);
+			$this->set('recipe',$recipe);
+			$this->set('n_ad',$number_adult);
+			$this->set('n_ch',$number_child);
+
+			//
+			$comment = 'よし、大人'.$number_adult.'人と、こども'.$number_child.'人の料理やな。ちょっとまっとりゃーよ。ちゃーっとしらべてくるで。';
+			$late_comment="こんなんでどうかね？";
+			$this->set('late_comment',$late_comment);
+		}
+		$options = array();
+		for ($i=1;$i<11;$i++){
+			$options[$i]=$i;
+		}
+		$this->set('options',$options);
+
+
+		//Set Comment
+		if (!isset($comment)){
+			$comment = 'なにしとりゃーす？';
+		}
+		//$this->Recipe->
+		$this->set('comment',$comment);
+
+	}
 }

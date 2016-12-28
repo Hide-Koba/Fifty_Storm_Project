@@ -23,7 +23,7 @@ $('#add-option-button').click(function(event){
         + '</label><input id="Ingredient' + optionCount + 'weight" type="number" name="data[Ingredient][' + optionCount + '][weight]" step="any"/>'+
         '</div><div class="input select"><label for="Ingredient' + optionCount + 'weight_category">単位 ' + (optionCount+1)
         + '</label><select id="Ingredient' + optionCount + 'weight_category" name="data[Ingredient][' + optionCount + '][weight_category]"><option value="0">g</option><option value="1">cc</option><option value="2">手量り</option></select>'
-        +'<input type="button" value="材料'+(optionCount+1)+'を削除する" id="delete_ing_"'+optionCount+' onclick=delete_ing('+(optionCount)+')>'
+        +'<!--<input type="button" value="材料'+(optionCount+1)+'を削除する" id="delete_ing_"'+optionCount+' onclick=delete_ing('+(optionCount)+')>-->'
         +'</div></span>';
     event.preventDefault();
     $('#poll-options').append(inputHtml);
