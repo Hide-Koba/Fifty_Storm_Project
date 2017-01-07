@@ -1,5 +1,5 @@
 <?php
-App::uses('AppController', 'Controller');
+App::uses('AppController', 'Controller','String');
 /**
  * Recipes Controller
  *
@@ -34,7 +34,38 @@ class RecipesController extends AppController {
  * @param string $id
  * @return void
  */
+
+ public function checkext($name){
+	 $arr = explode('.', $name);
+	 $ext = array_pop($arr);
+	 return $ext;
+ }
 	public function view($id = null) {
+		//$sd = "C:\\xampp\htdocs\\fifty_recipe\app\webroot\img\\";
+		$sd = "../../app/webroot/img/";
+
+		$this->set('path',$sd);
+
+		if ($this->request->data){
+			if ($this->request->data['Recipe']['type']==="file_upload"){
+				//イメージファイルかどうかを確認
+				//if(file_exists($this->request->data['Recipe']['file_name']['tmp_name']) && exif_imagetype($this->request->data['Recipe']['file_name']['tmp_name'])){
+				if(file_exists($this->request->data['Recipe']['file_name']['tmp_name'])){
+					//ファイル名をUUIDへ変換
+					$ext = $this->checkext($this->request->data['Recipe']['file_name']['name']);
+					$filename = CakeText::uuid().".".$ext;
+					$uploadfile = $sd . basename($filename);
+
+					//ファイルの移動と保存
+					if (move_uploaded_file($this->data['Recipe']['file_name']['tmp_name'], $uploadfile)){
+						//write to DB
+						$this->Recipe->id = $this->request->data['Recipe']['id'];
+						$this->Recipe->saveField('main_pict',$filename);
+					}else{
+					}
+				}
+			}
+		}
 		if (!$this->Recipe->exists($id)) {
 			throw new NotFoundException(__('Invalid recipe'));
 		}

@@ -1,6 +1,31 @@
 <div class="recipes view">
 <h2><?php echo __('レシピ'); ?></h2>
-	<dl>
+<style>
+#recipe_details_container{
+	width:100%;
+	fload:left;
+}
+#recipe_details{
+	width:59%;
+	float:left;
+}
+#recipe_pict{
+	width:39%;
+	float:left;
+	margin:5px;
+	/*padding:5px;*/
+	text-align: center;
+}
+/** Scaffold View **/
+#dl_recipe {
+	line-height: 2em;
+	margin: 0em 0em;
+	width: 100%;
+}
+</style>
+<div id="recipe_details_container">
+<div id="recipe_details">
+	<dl id="dl_recipe">
 		<dt><?php echo __('レシピ名'); ?></dt>
 		<dd>
 			<?php echo h($recipe['Recipe']['name']); ?>
@@ -8,7 +33,7 @@
 		</dd>
 		<dt><?php echo __('カテゴリー'); ?></dt>
 		<dd>
-			<?php 
+			<?php
 			switch($recipe['Recipe']['category']){
 				case 0:
 					echo "主食";
@@ -60,8 +85,8 @@
 				case 4:
 					echo "一年を通じて";
 				default:
-					break;		
-			} 
+					break;
+			}
 			 ?>
 			&nbsp;
 		</dd>
@@ -81,6 +106,41 @@
 			&nbsp;
 		</dd>
 	</dl>
+</div>
+
+	<div id="recipe_pict">
+		<div style="height:190px;width:350px;text-align:center;">
+		<?php
+			//画像があるかどうかを実体で検知
+			$filename=$path.$recipe['Recipe']['main_pict'];
+			$file_exsistency = file_exists($filename);
+
+			if ($recipe['Recipe']['main_pict']&&$file_exsistency){
+				//画像あり
+				echo $this->Html->image($recipe['Recipe']['main_pict'],array('height'=>'190px'));
+			}else{
+				//画像なし
+			 echo $this->Html->image('no_image.png');
+			}
+		?>
+		</div>
+		<?php
+		//debug($recipe);
+			echo $this->Form->create('Recipe',array('type'=>'file'));
+			echo $this->Form->input('id',array('type'=>'hidden','value'=>$recipe['Recipe']['id']));
+			echo $this->Form->input('type',array('type'=>'hidden','value'=>'file_upload'));
+			echo $this->Form->input('file_name',array('type'=>'file','label'=>'画像をアップロードする'));
+			if ($recipe['Recipe']['main_pict']){
+				echo $this->Form->end(__('画像を更新'));
+			}else{
+				echo $this->Form->end(__('画像を登録'));
+			}
+
+		 ?>
+	</div>
+
+	</div>
+	<div style="clear:both;" /></div>
 	<div class="related">
 	<h3><?php echo __('素材リスト'); ?></h3>
 	<?php if (!empty($recipe['Ingredient'])): ?>
@@ -93,7 +153,7 @@
 	<?php foreach ($recipe['Ingredient'] as $ingredient): ?>
 		<tr>
 			<td><?php echo $ingredient['name']; ?></td>
-			<td><?php echo $ingredient['weight']; ?> <?php 
+			<td><?php echo $ingredient['weight']; ?> <?php
 				switch($ingredient['weight_category']){
 					case 0: echo "g";break;
 					case 1: echo "cc";break;
@@ -150,4 +210,3 @@
 		<li><?php echo $this->Html->link(__('新しいレシピを登録する'), array('action' => 'add')); ?> </li>
 	</ul>
 </div>
-
