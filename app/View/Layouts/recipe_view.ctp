@@ -39,7 +39,6 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 <body>
 	<div id="container">
 		<div id="header">
-			<h1><?php //echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?>五十嵐ばあちゃん</h1>
 		</div>
 		<div id="content">
 

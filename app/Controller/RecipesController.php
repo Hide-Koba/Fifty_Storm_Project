@@ -155,21 +155,80 @@ class RecipesController extends AppController {
 	}
 
 	//Pick three
+	public function api_recipe(){
+		//初期化
+		//$res = [];
+		$count=2;
+		//////////////////////////////////////////////////////////////////////////
+		//何も入力がない場合
+		//////////////////////////////////////////////////////////////////////////
+		if ($count===''){
+			return false;
+		}
+		if ($count===0){
+			//五十嵐ばあちゃんの写真
+			$photourl = $this->Recipe->gen_photourl();
+			//あいさつ
+			$aisatsu = 'なにしとりゃーす？';
+			//五十嵐語録
+			$goroku = $this->Recipe->gen_goroku();
+			//$abc = [100,200,300];
+			$res = array(
+				'igarashi_photo_url' =>$photourl,
+				'hello'=>'なにしとりゃーす？',
+				'goroku'=>$goroku
+			);
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		//入力があった場合
+		//////////////////////////////////////////////////////////////////////////
+
+		if ($count>=1){
+			//五十嵐ばあちゃんの写真
+			$photourl = $this->Recipe->gen_photourl();
+			//あいさつ
+			$aisatsu = 'なにしとりゃーす？';
+			//五十嵐語録
+			$goroku = $this->Recipe->gen_goroku();
+
+			$recipe = $this->Recipe->pickrecipe(3);
+
+			$res = array(
+				'igarashi_photo_url' =>$photourl,
+				'hello'=>'なにしとりゃーす？',
+				'goroku'=>$goroku,
+				'recipe'=>$recipe
+			);
+		}
+
+		//////////////////////////////////////////////////////////////////////////
+		//JSON出力
+		/////////////////////////////////////////////////////////////////////////
+		//$this->viewClass = 'Json';
+		$this->autoRender = false;
+		//echo "test";
+		//$this->set(compact('res'));
+		//$this->set('_serialize','res');
+		return json_encode(compact('res'));
+	}
 	public function pickthree(){
+		//$recipe2 = $this->Recipe->pickrecipe2(3);
 		$this->layout = 'recipe_view';
 		if ($this->request->data){
 			$number_adult = $this->request->data['Recipe']['number_adult'];
-			$number_child = $this->request->data['Recipe']['number_child'];
+			//$number_child = $this->request->data['Recipe']['number_child'];
+			$number_child = 0;
 
 			//Get Recipe
-			$recipe = $this->Recipe->pickrecipe(3);
+			$recipe = $this->Recipe->pickrecipe2(3);
 			//$recipe = $this->Recipe->multiplier($recipe,$number_adult,$number_child);
 			$this->set('recipe',$recipe);
 			$this->set('n_ad',$number_adult);
 			$this->set('n_ch',$number_child);
 
 			//
-			$comment = 'よし、大人'.$number_adult.'人と、こども'.$number_child.'人の料理やな。ちょっとまっとりゃーよ。ちゃーっとしらべてくるで。';
+			$comment = 'よし、'.$number_adult.'人の料理だね。ちょっとまっとりゃーよ。ちゃーっとしらべてくるで。';
 			$late_comment="こんなんでどうかね？";
 			$this->set('late_comment',$late_comment);
 		}

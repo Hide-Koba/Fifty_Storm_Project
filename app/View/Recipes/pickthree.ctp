@@ -19,7 +19,7 @@
 <?php
 if (isset($n_ad)){
 	$n_ad = (int)$n_ad;
-	debug($n_ad);
+	//debug($n_ad);
 }
 
 function show_weightcategory($size,$weight_category,$n_ad,$n_ch){
@@ -56,7 +56,8 @@ function gogoku(){
 "食事は口に入るまでは文化、口の中に入ったら科学",
 "どじょうはうなぎと同じ栄養価だからね",
 "べろメーターを大切に",
-"おしょう油とみりんを同量のものを作っておきなよ。それを急ぎの時に使うとお助けマンになるよ"
+"おしょう油とみりんを同量のものを作っておきなよ。それを急ぎの時に使うとお助けマンになるよ",
+"健康の素は食事だよ"
 	);
 
 	$rnd = rand(0,count($words));
@@ -88,7 +89,7 @@ function gogoku(){
 </div>
 <div id="comment" class="base">
 	<!-- Comment section -->
-	五十嵐ばあちゃん：<?php echo $comment ?><br />
+<?php echo $comment ?><br />
 	<?php echo gogoku(); ?>
 	<!-- Comment section END -->
 </div>
@@ -111,7 +112,16 @@ function gogoku(){
 				<?= date('Y年m月d日', strtotime($i.' day', time()));?>
 				<h1>お昼ごはん</h1>
 				<div>
-					<h2>ごはん:<?php echo($recipe[$i][0][0]['Recipe']['name']); ?></h2>
+					<h2>主食:<?php echo($recipe[$i][0][0]['Recipe']['name']); ?></h2>
+					<div>
+						<?php
+						if ($recipe[$i][0][0]['Recipe']['main_pict']===""){
+						}else{
+							?><img src="http://50storm.net/recipe_system/img/<?php echo($recipe[$i][0][0]['Recipe']['main_pict']); ?>" height="190px" />
+							<?php
+						}
+						 ?>
+					</div>
 					<div>手順
 						<ol>
 							<?php foreach($recipe[$i][0][0]['Step'] as $step ){
@@ -135,6 +145,15 @@ function gogoku(){
 				</div>
 				<div>
 					<h2>主菜:<?php echo($recipe[$i][0][1]['Recipe']['name']); ?></h2>
+					<div>
+						<?php
+						if ($recipe[$i][0][1]['Recipe']['main_pict']===""){
+						}else{
+							?><img src="http://50storm.net/recipe_system/img/<?php echo($recipe[$i][0][1]['Recipe']['main_pict']); ?>" height="190px" />
+							<?php
+						}
+						 ?>
+					</div>
 					<div>手順
 						<ol>
 							<?php foreach($recipe[$i][0][1]['Step'] as $step ){
@@ -158,6 +177,15 @@ function gogoku(){
 				</div>
 				<div>
 					<h2>副菜:<?php echo($recipe[$i][0][2]['Recipe']['name']); ?></h2>
+					<div>
+						<?php
+						if ($recipe[$i][0][2]['Recipe']['main_pict']===""){
+						}else{
+							?><img src="http://50storm.net/recipe_system/img/<?php echo($recipe[$i][0][2]['Recipe']['main_pict']); ?>" height="190px" />
+							<?php
+						}
+						 ?>
+					</div>
 					<div>手順
 						<ol>
 							<?php foreach($recipe[$i][0][2]['Step'] as $step ){
@@ -181,6 +209,15 @@ function gogoku(){
 				</div>
 				<div>
 					<h2>汁:<?php echo($recipe[$i][0][3]['Recipe']['name']); ?></h2>
+					<div>
+						<?php
+						if ($recipe[$i][0][3]['Recipe']['main_pict']===""){
+						}else{
+							?><img src="http://50storm.net/recipe_system/img/<?php echo($recipe[$i][0][3]['Recipe']['main_pict']); ?>" height="190px" />
+							<?php
+						}
+						 ?>
+					</div>
 					<div>手順
 						<ol>
 							<?php foreach($recipe[$i][0][3]['Step'] as $step ){
@@ -210,7 +247,16 @@ function gogoku(){
 			<?= date('Y年m月d日', strtotime($i.' day', time()));?>
 			<h1>夜ごはん</h1>
 			<div>
-				<h2>ごはん:<?php echo($recipe[$i][1][0]['Recipe']['name']); ?></h2>
+				<h2>主食:<?php echo($recipe[$i][1][0]['Recipe']['name']); ?></h2>
+				<div>
+					<?php
+					if ($recipe[$i][1][0]['Recipe']['main_pict']===""){
+					}else{
+						?><img src="http://50storm.net/recipe_system/img/<?php echo($recipe[$i][1][0]['Recipe']['main_pict']); ?>" height="190px" />
+						<?php
+					}
+					 ?>
+				</div>
 				<div>手順
 					<ol>
 						<?php foreach($recipe[$i][1][0]['Step'] as $step ){
@@ -234,6 +280,15 @@ function gogoku(){
 			</div>
 			<div>
 				<h2>主菜:<?php echo($recipe[$i][1][1]['Recipe']['name']); ?></h2>
+				<div>
+					<?php
+					if ($recipe[$i][1][1]['Recipe']['main_pict']===""){
+					}else{
+						?><img src="http://50storm.net/recipe_system/img/<?php echo($recipe[$i][1][1]['Recipe']['main_pict']); ?>" height="190px" />
+						<?php
+					}
+					 ?>
+				</div>
 				<div>手順
 					<ol>
 						<?php foreach($recipe[$i][1][1]['Step'] as $step ){
@@ -257,6 +312,15 @@ function gogoku(){
 			</div>
 			<div>
 				<h2>副菜:<?php echo($recipe[$i][1][2]['Recipe']['name']); ?></h2>
+				<div>
+					<?php
+					if ($recipe[$i][1][2]['Recipe']['main_pict']===""){
+					}else{
+						?><img src="http://50storm.net/recipe_system/img/<?php echo($recipe[$i][1][2]['Recipe']['main_pict']); ?>" height="190px" />
+						<?php
+					}
+					 ?>
+				</div>
 				<div>手順
 					<ol>
 						<?php foreach($recipe[$i][1][2]['Step'] as $step ){
@@ -280,6 +344,15 @@ function gogoku(){
 			</div>
 			<div>
 				<h2>汁:<?php echo($recipe[$i][1][3]['Recipe']['name']); ?></h2>
+				<div>
+					<?php
+					if ($recipe[$i][1][3]['Recipe']['main_pict']===""){
+					}else{
+						?><img src="http://50storm.net/recipe_system/img/<?php echo($recipe[$i][1][3]['Recipe']['main_pict']); ?>" height="190px" />
+						<?php
+					}
+					 ?>
+				</div>
 				<div>手順
 					<ol>
 						<?php foreach($recipe[$i][1][3]['Step'] as $step ){

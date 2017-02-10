@@ -156,7 +156,8 @@ class Recipe extends AppModel {
 	 }
 
 	 public function gen_rnd($max=1){
-	 	$rnd_seed = (rand(0,$max)+rand(0,$max)+rand(0,$max)+rand(0,$max)+rand(0,$max))/5.0;
+	 	//$rnd_seed = (rand(0,$max)+rand(0,$max)+rand(0,$max)+rand(0,$max)+rand(0,$max))/5.0;
+		$rnd_seed = rand(0,($max-1));
 	 	return $rnd_seed;
 	 }
 	 public function get_subseason($date){
@@ -247,6 +248,89 @@ class Recipe extends AppModel {
 		$recipe['cnt']['sub_cnt'] = count($recipe['sub']);
 		$recipe['cnt']['soup_cnt'] = count($recipe['soup']);
 		return $recipe;
+	 }
+
+	 public function find_joint_recipe($season=4){
+		 //joint all recipe
+	 	$recipe['main'] = $this->find('all',array('conditions'=>array('season'=>array($season,4),'category'=>0)));
+
+		$recipe['dish'] = $this->find('all',array('conditions'=>array('season'=>array($season,4),'category'=>1)));
+
+		$recipe['sub'] = $this->find('all',
+			array(
+				'conditions'=>array(
+					array('season'=>array($season,4))),
+					array('OR'=>array('category'=>2)),
+					array('OR'=>array('category'=>3)),
+					array('OR'=>array('category'=>4)),
+					array('OR'=>array('category'=>5)),
+			)
+		);
+
+		$recipe['soup'] = $this->find('all',array('conditions'=>array('season'=>array($season,4),'category'=>6)));
+		//debug($recipe['soup']);
+
+		//もし、絶対数が少なかったら、今度は全季節でもう一回やりなおし
+
+		if (count($recipe['main'])<10){
+			$recipe['main'] = $this->find('all',array('conditions'=>array('category'=>0)));
+		}
+		if (count($recipe['dish'])<10){
+			$recipe['dish'] = $this->find('all',array('conditions'=>array('category'=>1)));
+		}
+		if (count($recipe['sub'])<10){
+			$recipe['sub'] = $recipe['sub'] = $this->find('all',
+				array(
+					'conditions'=>array(
+						array('OR'=>array('category'=>2)),
+						array('OR'=>array('category'=>3)),
+						array('OR'=>array('category'=>4)),
+						array('OR'=>array('category'=>5)),
+					)
+				)
+			);
+		}
+		if (count($recipe['soup'])<10){
+			$recipe['soup'] = $this->find('all',array('conditions'=>array('category'=>6)));
+		}
+
+		//Count
+		$recipe['cnt']['main_cnt'] = count($recipe['main']);
+		$recipe['cnt']['dish_cnt'] = count($recipe['dish']);
+		$recipe['cnt']['sub_cnt'] = count($recipe['sub']);
+		$recipe['cnt']['soup_cnt'] = count($recipe['soup']);
+		return $recipe;
+	 }
+	 public function gen_photourl(){
+		 $url_rand = rand(1,3);//ここ、ベタ打ちなので注意
+		 //仮環境URL
+		 $url = 'http://localhost/fifty_recipe/img/fifty_'.$url_rand.'.png';
+		 //本番環境URL
+		 //$url = 'http://50storm.net/recipe_system/img/fifty_'.$url_rand.'.png';
+		 return $url;
+	 }
+	 public function gen_goroku(){
+		 $aisatsu = "";
+		 $words = array(
+	 		"最近はみんな一週間分まとめ買いだけど、野菜は三日間しかもたんでね",
+	 "五日間の買い物計画でも良いけど、とりあえず三日間だね",
+	 "朝は玉子、昼は肉、夜は魚って覚えときゃぁよ",
+	 "ちゃんとご飯は食べなかんよ",
+	 "お腹周りが気になって来たら三口食べたらお茶を飲みな",
+	 "口の中でお粥を作りな",
+	 "野菜を食べなよ",
+	 "かぼちゃは冬至を過ぎると味が落ちるからね",
+	 "弁当の日を作っとるか",
+	 "食事は口に入るまでは文化、口の中に入ったら科学",
+	 "どじょうはうなぎと同じ栄養価だからね",
+	 "べろメーターを大切に",
+	 "おしょう油とみりんを同量のものを作っておきなよ。それを急ぎの時に使うとお助けマンになるよ",
+	 "健康の素は食事だよ"
+	 	);
+
+		$word_rand = rand(0,(count($words)-1));
+
+		 return $words[$word_rand];
 	 }
 	 public function pickrecipe($day_count=1){
 	 	//Init Vars
@@ -343,6 +427,7 @@ class Recipe extends AppModel {
 				break;
 			}
 			//Set Lunch
+			//debug($recipe_no['main']);
 			$recipe[$i][0][0]=$recipe_no['main'];
 			$recipe[$i][0][1]=$recipe_no['dish'];
 			$recipe[$i][0][2]=$recipe_no['sub'];
@@ -421,4 +506,74 @@ class Recipe extends AppModel {
 		//return Recipe
 		return $recipe;
 	 }
+
+	 public function pickrecipe2($day_count=1){
+		 //check args
+		 //echo $day_count;
+
+		 //check this month
+		 $thismonth = date('n');
+ 		//echo "Month".$thismonth;
+		//echo "<br>";
+		$thisseason = $this->define_season($thismonth);//0:spring(3-5), 1:summer(6-8), 2:autom(9-11), 3:winter(12-2)
+		//$otherseason = $this->define_season(12);
+		//echo "Season No".$thisseason;
+		//echo "<br>";
+
+		//get General Recipe
+		$general_recipe = $this->find_recipe(4);
+		$seasonal_recipe = $this->find_recipe($thisseason);
+		$joint_recipe = $this->find_joint_recipe($thisseason);
+		/*
+		echo "No. joint main recipe:".count($joint_recipe['main'])."<br>";
+		echo "No. joint dish recipe:".count($joint_recipe['dish'])."<br>";
+		echo "No. joint sub recipe:".count($joint_recipe['sub'])."<br>";
+		echo "No. joint soup recipe:".count($joint_recipe['soup'])."<br>";
+echo "<br>";
+		echo "No. main recipe general:".count($general_recipe['main'])."<br>";
+		echo "No. dish recipe general:".count($general_recipe['dish'])."<br>";
+		echo "No. sub recipe general:".count($general_recipe['sub'])."<br>";
+		echo "No. soup recipe general:".count($general_recipe['soup'])."<br>";
+echo "<br>";
+		echo "No. main recipe seasonal:".count($seasonal_recipe['main'])."<br>";
+		echo "No. dish recipe seasonal:".count($seasonal_recipe['dish'])."<br>";
+		echo "No. sub recipe seasonal:".count($seasonal_recipe['sub'])."<br>";
+		echo "No. soup recipe seasonal:".count($seasonal_recipe['soup'])."<br>";
+
+		echo "<br>";
+		echo "<pre>";
+		//var_dump($general_recipe);
+		echo "</pre>";
+		echo "No. recipe seasonal:".count($seasonal_recipe);
+		echo "<br>";*/
+
+		for ($i=0;$i<$day_count;$i++){
+			//昼
+			//主食
+			$recipe[$i][0][0] = $joint_recipe['main'][$this->gen_rnd($joint_recipe['cnt']['main_cnt'])];
+			//主菜
+			$recipe[$i][0][1] = $joint_recipe['dish'][$this->gen_rnd($joint_recipe['cnt']['dish_cnt'])];
+			//副菜
+			$recipe[$i][0][2] = $joint_recipe['sub'][$this->gen_rnd($joint_recipe['cnt']['sub_cnt'])];
+			//汁
+			$recipe[$i][0][3] = $joint_recipe['soup'][$this->gen_rnd($joint_recipe['cnt']['soup_cnt'])];
+
+			//夜
+			//主食
+			$recipe[$i][1][0] = $joint_recipe['main'][$this->gen_rnd($joint_recipe['cnt']['main_cnt'])];
+			//主菜
+			$recipe[$i][1][1] = $joint_recipe['dish'][$this->gen_rnd($joint_recipe['cnt']['dish_cnt'])];
+			//副菜
+			$recipe[$i][1][2] = $joint_recipe['sub'][$this->gen_rnd($joint_recipe['cnt']['sub_cnt'])];
+			//汁
+			$recipe[$i][1][3] = $joint_recipe['soup'][$this->gen_rnd($joint_recipe['cnt']['soup_cnt'])];
+		}
+
+
+
+
+		 return $recipe;
+	 }
+
+
 }
