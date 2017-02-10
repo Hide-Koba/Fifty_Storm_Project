@@ -1,6 +1,8 @@
 <style>
 	.base{
-		width:640px;
+		/*width:640px;*/
+		/*width:500px;*/
+		width:85%;
 		border:#000000 1px;
 	}
 	#head{
@@ -16,6 +18,12 @@
 		border:#0000ff 1px;
 	}
 </style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+$("#parent-iframe", window.parent.document).height(document.body.scrollHeight);
+});
+</script>
 <?php
 if (isset($n_ad)){
 	$n_ad = (int)$n_ad;
